@@ -1,0 +1,31 @@
+- name: Deploy Scientific Calculator Docker Container
+  hosts: local
+  become: false
+  tasks:
+    - name: Ensure required Python packages are installed
+      pip:
+        name:
+          - docker
+          - requests
+        state: present
+
+    - name: Pull Calculator Docker Image
+      community.docker.docker_image:
+        name: ketan803/scientific-calculator
+        tag: "1.0"
+        source: pull
+
+    - name: Stop old Calculator container if running
+      community.docker.docker_container:
+        name: calculator
+        state: absent
+
+    - name: Run Calculator Container
+      community.docker.docker_container:
+        name: calculator
+        image: ketan803/scientific-calculator:1.0
+        state: started
+        restart_policy: always
+        interactive: true
+        tty: true
+        command: ["java", "-cp", "/app/target/classes", "com.calculator.App"]

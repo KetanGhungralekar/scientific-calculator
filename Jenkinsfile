@@ -28,16 +28,27 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t ketan803/scientific-calculator:1.0 .'
+                sh 'docker build -t ketan803/scientific-calculator:latest .'
             }
         }
 
         stage('Docker Push') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                    sh 'docker push ketan803/scientific-calculator:1.0'
+                    sh '''
+                        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                        docker push ketan803/scientific-calculator:latest
+                    '''
                 }
+            }
+        }
+
+        stage('Deploy with Ansible') {
+            steps {
+                sh '''
+                    cd SPE_mini_Project/scientific-calculator
+                    ansible-playbook -i hosts.ini deploy_calculator.yml
+                '''
             }
         }
     }
