@@ -28,4 +28,4 @@
         restart_policy: always
         interactive: true
         tty: true
-        command: ["java", "-cp", "/app/target/classes", "com.calculator.App"]
+        command: ["java", "-jar", "calculator.jar"]
