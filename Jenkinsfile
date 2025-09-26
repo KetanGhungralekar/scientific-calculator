@@ -46,6 +46,7 @@ pipeline {
         stage('Deploy with Ansible') {
             steps {
                 sh '''
+                    export PATH=$PATH:$HOME/.local/bin
                     ansible-playbook -i hosts.ini deploy_calculator.yml
                 '''
             }
