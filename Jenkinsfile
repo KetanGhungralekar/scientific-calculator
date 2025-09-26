@@ -28,7 +28,7 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t ketan803/scientific-calculator:latest .'
+                sh 'docker build -t ketan803/scientific-calculator:1.0 .'
             }
         }
 
@@ -37,7 +37,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh '''
                         echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                        docker push ketan803/scientific-calculator:latest
+                        docker push ketan803/scientific-calculator:1.0
                     '''
                 }
             }
