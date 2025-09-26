@@ -46,7 +46,6 @@ pipeline {
         stage('Deploy with Ansible') {
             steps {
                 sh '''
-                    cd SPE_mini_Project/scientific-calculator
                     ansible-playbook -i hosts.ini deploy_calculator.yml
                 '''
             }
