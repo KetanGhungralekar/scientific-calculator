@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven'   // Make sure Maven is configured in Jenkins (Global Tool Config)
+        maven 'Maven'
     }
 
     stages {
@@ -42,6 +42,7 @@ pipeline {
                 }
             }
         }
+
         stage('Deploy with Ansible') {
             steps {
                 withEnv(["PATH+LOCAL=/var/lib/jenkins/.local/bin"]) {
@@ -50,6 +51,37 @@ pipeline {
                     '''
                 }
             }
+        }
+    }
+
+    post {
+        success {
+            emailext (
+                subject: "✅ SUCCESS: Build #${env.BUILD_NUMBER} - ${env.JOB_NAME}",
+                body: """
+                <h3>Build Successful 🎉</h3>
+                <p>Job: ${env.JOB_NAME}</p>
+                <p>Build Number: ${env.BUILD_NUMBER}</p>
+                <p>Check console output: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                """,
+                to: "your_email@example.com",
+                attachLog: true,
+                mimeType: 'text/html'
+            )
+        }
+        failure {
+            emailext (
+                subject: "❌ FAILED: Build #${env.BUILD_NUMBER} - ${env.JOB_NAME}",
+                body: """
+                <h3>Build Failed ❗</h3>
+                <p>Job: ${env.JOB_NAME}</p>
+                <p>Build Number: ${env.BUILD_NUMBER}</p>
+                <p>Check console output: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                """,
+                to: "your_email@example.com",
+                attachLog: true,
+                mimeType: 'text/html'
+            )
         }
     }
 }
