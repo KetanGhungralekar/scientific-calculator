@@ -64,7 +64,7 @@ pipeline {
                 <p>Build Number: ${env.BUILD_NUMBER}</p>
                 <p>Check console output: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
                 """,
-                to: "your_email@example.com",
+                to: "kghungralekar1234@gmail.com",
                 attachLog: true,
                 mimeType: 'text/html'
             )
@@ -78,7 +78,7 @@ pipeline {
                 <p>Build Number: ${env.BUILD_NUMBER}</p>
                 <p>Check console output: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
                 """,
-                to: "your_email@example.com",
+                to: "kghungralekar1234@gmail.com",
                 attachLog: true,
                 mimeType: 'text/html'
             )
